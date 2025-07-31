@@ -33,10 +33,9 @@ public class MemoController {
        return memoService.deleteMemo(id);
     }
 
-    /*
-    @GetMapping("/{name}")
-    public List<MemoResponseDto> getMemberByName(@PathVariable String name) {
-        return memoService.findAll(name);
+    @GetMapping("/{id}")
+    public List<MemoResponseDto> getMemoById(@PathVariable Long id) {
+        return memoService.findById(id);
     }
-    */
+
 }

@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -51,27 +52,29 @@ public class MemoService {
         return memoResponseDtos;
     }
 
+    @Transactional(readOnly = true)
+    public List<MemoResponseDto> findById(Long id) {
+        //Memo의 정보를 DB에서 찾아서 Memos에 저장
+        Memo memos = memoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 " + id + " 입니다"));
+        //Dto 리스트 생성 (빈 리스트)
+        List<MemoResponseDto> memoResponseDtos = new ArrayList<>();
+        memoResponseDtos.add(new MemoResponseDto(memos.getId(), memos.getTitle(), memos.getContent(), memos.getName(), memos.getCreateAt(), memos.getUpdateAt()));
+
+        return memoResponseDtos;
+    }
+
+
+
+
+
+
+
     @Transactional()
     public ResponseEntity<Void> deleteMemo(Long id){
 
         memoRepository.deleteById(id);
         return null;
     }
-
-    /*  Lv2 작성자명으로 조회하는 것으로 착각하여 구현
-    @Transactional(readOnly = true)
-    public List<MemoResponseDto> findByName(String name) {
-        //Memo의 정보를 DB에서 찾아서 Memos에 저장
-        List<Memo> memos = memoRepository.findByName(name);
-        //Dto 리스트 생성 (빈 리스트)
-        List<MemoResponseDto> memoResponseDtos = new ArrayList<>();
-
-        for(Memo memo : memos) {
-            memoResponseDtos.add(new MemoResponseDto(memo.getId(), memo.getTitle(), memo.getContent(), memo.getName(), memo.getCreateAt(), memo.getUpdateAt()));
-        }
-        return memoResponseDtos;
-    }
-     */
 }
 
 
