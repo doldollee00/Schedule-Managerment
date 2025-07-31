@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.example.memo.dto.MemoRequestDto;
 import org.example.memo.dto.MemoResponseDto;
 import org.example.memo.service.MemoService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,12 +23,20 @@ public class MemoController {
     }
 
     @GetMapping
-    public List<MemoResponseDto> getMemo() {
-        return memoService.findAll();
+    public List<MemoResponseDto> getMemo(@RequestParam(required = false) String name) {
+        return memoService.findAll(name);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteMeno(@PathVariable Long id) {
+
+       return memoService.deleteMemo(id);
+    }
+
+    /*
     @GetMapping("/{name}")
     public List<MemoResponseDto> getMemberByName(@PathVariable String name) {
-        return memoService.findByName(name);
+        return memoService.findAll(name);
     }
+    */
 }

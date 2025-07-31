@@ -5,6 +5,7 @@ import org.example.memo.dto.MemoRequestDto;
 import org.example.memo.dto.MemoResponseDto;
 import org.example.memo.entity.Memo;
 import org.example.memo.repository.MemoRepository;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,9 +29,19 @@ public class MemoService {
     }
 
     @Transactional(readOnly = true)
-    public List<MemoResponseDto> findAll() {
-        //Memo의 정보를 DB에서 찾아서 Memos에 저장
-        List<Memo> memos = memoRepository.findAll();
+    public List<MemoResponseDto> findAll(String name) {
+        List<Memo> memos;
+
+        // 검증
+        if (name == null || name.equals("")) {
+            //Memo의 정보를 DB에서 찾아서 Memos에 저장
+            memos = memoRepository.findAll();
+        }else{
+            //Memo의 정보 중 name을 DB에서 찾아서 Memos에 저장
+            memos = memoRepository.findByName(name);
+        }
+
+        //List<Memo> memos = memoRepository.findAll();
         //Dto 리스트 생성 (빈 리스트)
         List<MemoResponseDto> memoResponseDtos = new ArrayList<>();
 
@@ -40,6 +51,15 @@ public class MemoService {
         return memoResponseDtos;
     }
 
+
+    @Transactional()
+    public ResponseEntity<Void> deleteMemo(Long id){
+
+        memoRepository.deleteById(id);
+        return null;
+    }
+
+    /*  Lv2 작성자명으로 조회하는 것으로 착각하여 구현
     @Transactional(readOnly = true)
     public List<MemoResponseDto> findByName(String name) {
         //Memo의 정보를 DB에서 찾아서 Memos에 저장
@@ -52,6 +72,7 @@ public class MemoService {
         }
         return memoResponseDtos;
     }
+     */
 
 
     /*
