@@ -35,22 +35,21 @@ public class MemoService {
         // 검증
         if (name == null || name.equals("")) {
             //Memo의 정보를 DB에서 찾아서 Memos에 저장
-            memos = memoRepository.findAll();
+            memos = memoRepository.findAllByOrderByUpdateAtDesc();
         }else{
             //Memo의 정보 중 name을 DB에서 찾아서 Memos에 저장
-            memos = memoRepository.findByName(name);
+            memos = memoRepository.findByNameOrderByUpdateAtDesc(name);
         }
 
         //List<Memo> memos = memoRepository.findAll();
         //Dto 리스트 생성 (빈 리스트)
         List<MemoResponseDto> memoResponseDtos = new ArrayList<>();
-
         for(Memo memo : memos) {
             memoResponseDtos.add(new MemoResponseDto(memo.getId(), memo.getTitle(), memo.getContent(), memo.getName(), memo.getCreateAt(), memo.getUpdateAt()));
         }
+
         return memoResponseDtos;
     }
-
 
     @Transactional()
     public ResponseEntity<Void> deleteMemo(Long id){
@@ -72,12 +71,6 @@ public class MemoService {
         }
         return memoResponseDtos;
     }
-     */
-
-
-    /*
-    memoRepository.findById(1L).orElseThrow(
-            () -> new IllegalArgumentException("잘못된 member Id 입니다:));
      */
 }
 

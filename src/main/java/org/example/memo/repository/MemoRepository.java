@@ -8,4 +8,6 @@ import java.util.List;
 public interface MemoRepository extends JpaRepository<Memo, Long> {
 
     List<Memo> findByName(String name);
+    List<Memo> findAllByOrderByUpdateAtDesc();
+    List<Memo> findByNameOrderByUpdateAtDesc(String name);
 }
