@@ -28,9 +28,8 @@ public class MemoController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteMeno(@PathVariable Long id) {
-
-       return memoService.deleteMemo(id);
+    public ResponseEntity<Void> deleteMeno(@PathVariable Long id, @RequestBody MemoRequestDto pw) {
+       return memoService.deleteMemo(id, pw.getPw());
     }
 
     @GetMapping("/{id}")
