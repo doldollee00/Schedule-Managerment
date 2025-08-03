@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.example.memo.dto.CommentRequestDto;
 import org.example.memo.dto.CommentResponseDto;
 import org.example.memo.dto.MemoRequestDto;
+import org.example.memo.dto.MemoResponseDto;
 import org.example.memo.service.CommentService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,5 +27,11 @@ public class CommentController {
     @DeleteMapping("/{memoID}/{commentId}")
     public ResponseEntity<Void> deleteComment(@PathVariable Long commentId) {
         return commentService.deleteComment(commentId);
+    }
+
+    //일정 검색(사용자 명으로도 검색 가능)
+    @GetMapping("/{memoID}/{commentId}")
+    public List<CommentResponseDto> getComment(@PathVariable Long commentId) {
+        return commentService.findById(commentId);
     }
 }

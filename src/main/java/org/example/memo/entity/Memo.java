@@ -1,13 +1,13 @@
 package org.example.memo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.example.memo.dto.MemoRequestDto;
 import org.example.memo.dto.MemoResponseDto;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,6 +20,10 @@ public class Memo extends BaseEntity {
     private String content;
     private String name;
     private Long pw;
+
+
+    @OneToMany(mappedBy = "memoComment", cascade =  CascadeType.ALL, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
     public Memo(String title, String content, String name, Long pw) {
         this.title = title;

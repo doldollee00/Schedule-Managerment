@@ -1,6 +1,7 @@
 package org.example.memo.service;
 
 import lombok.RequiredArgsConstructor;
+import org.example.memo.dto.CommentResponseDto;
 import org.example.memo.dto.MemoRequestDto;
 import org.example.memo.dto.MemoResponseDto;
 import org.example.memo.entity.Memo;
@@ -14,6 +15,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -63,11 +65,22 @@ public class MemoService {
     //단건 조회
     @Transactional(readOnly = true)
     public List<MemoResponseDto> findById(Long id) {
+
         Memo memo = memoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 " + id + " 입니다"));
+
+        // 댓글 엔티티 -> DTO로 변환
+        List<CommentResponseDto> commentDtos = memo.getComments().stream()
+                .map(num -> new CommentResponseDto(
+                        num.getCommentId(),
+                        num.getComment(),
+                        num.getHuman(),
+                        num.getCreateAt(),
+                        num.getUpdateAt()
+                )).toList();
+
         //Dto 리스트 생성 (빈 리스트)
         List<MemoResponseDto> memoResponseDtos = new ArrayList<>();
-        memoResponseDtos.add(new MemoResponseDto(memo.getId(), memo.getTitle(), memo.getContent(), memo.getName(), memo.getCreateAt(), memo.getUpdateAt()));
-
+        memoResponseDtos.add(new MemoResponseDto(memo.getId(), memo.getTitle(), memo.getContent(), memo.getName(), memo.getCreateAt(), memo.getUpdateAt(), commentDtos));
         return memoResponseDtos;
     }
 
