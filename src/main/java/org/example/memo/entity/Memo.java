@@ -6,6 +6,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.example.memo.dto.MemoRequestDto;
+import org.example.memo.dto.MemoResponseDto;
 
 @Entity
 @Getter
@@ -24,5 +26,17 @@ public class Memo extends BaseEntity {
         this.content = content;
         this.name = name;
         this.pw = pw;
+    }
+
+    public void update(String title, String content, String name, Long pw) {
+        this.title = title;
+        this.content = content;
+        this.name = name;
+        this.pw = pw;
+    }
+
+    public void updateMemo(String title, String name){
+        this.title = title;
+        this.name = name;
     }
 }
