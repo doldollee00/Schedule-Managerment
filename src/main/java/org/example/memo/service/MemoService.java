@@ -96,14 +96,12 @@ public class MemoService {
     //일정 삭제
     @Transactional()
     public ResponseEntity<Void> deleteMemo(Long id, Long pw){
-
         //조회
         Memo memo = memoRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 " + id + " 입니다"));
         //PW 검증
         if (!memo.getPw().equals(pw)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The title is a required value.");
         }
-
         memoRepository.deleteById(id);
         return null;
     }
